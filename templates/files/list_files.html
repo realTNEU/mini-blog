@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}All Files - Mini Blog{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-folder"></i> Uploaded Files</h2>
+    {% if user.is_authenticated %}
+        <a href="{% url 'files:upload_file' %}" class="btn btn-primary">
+            <i class="bi bi-cloud-upload"></i> Upload File
+        </a>
+    {% endif %}
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        {% if files %}
+            <div class="table-responsive">
+                <table class="table table-hover" id="filesTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th><i class="bi bi-file-earmark"></i> File Name</th>
+                            <th><i class="bi bi-tag"></i> Type</th>
+                            <th><i class="bi bi-hdd"></i> Size</th>
+                            <th><i class="bi bi-table"></i> Rows</th>
+                            <th><i class="bi bi-layout-three-columns"></i> Columns</th>
+                            <th><i class="bi bi-calendar"></i> Upload Date</th>
+                            <th><i class="bi bi-person"></i> Uploader</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in files %}
+                            <tr>
+                                <td>
+                                    <i class="bi bi-file-earmark-{{ file.file_type }}"></i>
+                                    <a href="{{ file.file.url }}" target="_blank">{{ file.file_name }}</a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ file.get_file_type_display }}</span>
+                                </td>
+                                <td class="file-size" data-size="{{ file.file_size }}"></td>
+                                <td>
+                                    {% if file.excel_rows %}
+                                        {{ file.excel_rows }}
+                                    {% else %}
+                                        <span class="text-muted">N/A</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if file.excel_columns %}
+                                        {{ file.excel_columns }}
+                                    {% else %}
+                                        <span class="text-muted">N/A</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ file.upload_date|date:"M d, Y g:i A" }}</td>
+                                <td>{{ file.uploader.username }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle"></i> No files uploaded yet.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Format file sizes
+    $('.file-size').each(function() {
+        var size = parseInt($(this).data('size'));
+        var sizeStr = '';
+        
+        if (size < 1024) sizeStr = size + ' B';
+        else if (size < 1024 * 1024) sizeStr = (size / 1024).toFixed(2) + ' KB';
+        else if (size < 1024 * 1024 * 1024) sizeStr = (size / (1024 * 1024)).toFixed(2) + ' MB';
+        else sizeStr = (size / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+        
+        $(this).text(sizeStr);
+    });
+    
+    // Highlight rows on hover
+    $('#filesTable tbody tr').hover(
+        function() { $(this).addClass('table-active'); },
+        function() { $(this).removeClass('table-active'); }
+    );
+});
+</script>
+{% endblock %}
+{% endblock %}

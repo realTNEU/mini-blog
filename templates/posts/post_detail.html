@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Mini Blog{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <a href="{% url 'posts:list_posts' %}" class="btn btn-sm btn-outline-secondary mb-3">
+            <i class="bi bi-arrow-left"></i> Back to All Posts
+        </a>
+        
+        <div class="card shadow">
+            <div class="card-body">
+                <h1 class="card-title">{{ post.title }}</h1>
+                <div class="text-muted mb-4">
+                    <i class="bi bi-person-circle"></i> By <strong>{{ post.author.username }}</strong> | 
+                    <i class="bi bi-calendar"></i> {{ post.created_at|date:"F d, Y" }} at {{ post.created_at|time:"g:i A" }}
+                    {% if post.updated_at != post.created_at %}
+                        <br><i class="bi bi-pencil"></i> Updated: {{ post.updated_at|date:"F d, Y" }} at {{ post.updated_at|time:"g:i A" }}
+                    {% endif %}
+                </div>
+                <hr>
+                <div class="post-content">
+                    {{ post.content|linebreaksbr }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .post-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+</style>
+{% endblock %}
+{% endblock %}
