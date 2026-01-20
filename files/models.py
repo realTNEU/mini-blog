@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from io import BytesIO
 import os
 import pandas as pd
 
@@ -47,16 +48,20 @@ class UploadedFile(models.Model):
             else:
                 self.file_type = 'other'
             
-            # Analyze Excel files
+            # Analyze Excel/CSV files without consuming the upload stream
             if self.file_type in ['excel', 'csv']:
                 try:
+                    file_bytes = self.file.read()
+                    buffer = BytesIO(file_bytes)
                     if self.file_type == 'excel':
-                        df = pd.read_excel(self.file)
+                        df = pd.read_excel(buffer, engine='openpyxl')
                     else:
-                        df = pd.read_csv(self.file)
+                        df = pd.read_csv(buffer)
                     self.excel_rows = len(df)
                     self.excel_columns = len(df.columns)
                 except Exception:
                     pass
+                finally:
+                    self.file.seek(0)
         
         super().save(*args, **kwargs)

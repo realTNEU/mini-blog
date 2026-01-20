@@ -11,12 +11,20 @@ def register(request):
         password = request.POST.get('password')
         password_confirm = request.POST.get('password_confirm')
         
+        if not all([username, email, password, password_confirm]):
+            messages.error(request, 'All fields are required.')
+            return redirect('accounts:register')
+
         if password != password_confirm:
             messages.error(request, 'Passwords do not match.')
             return redirect('accounts:register')
         
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists.')
+            return redirect('accounts:register')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'An account with this email already exists.')
             return redirect('accounts:register')
         
         user = User.objects.create_user(username=username, email=email, password=password)

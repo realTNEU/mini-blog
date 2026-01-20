@@ -8,11 +8,13 @@ def create_post(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
+        image = request.FILES.get('image')
         
         if title and content:
             Post.objects.create(
                 title=title,
                 content=content,
+                image=image,
                 author=request.user
             )
             messages.success(request, 'Post created successfully!')
