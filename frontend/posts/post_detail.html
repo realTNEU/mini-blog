@@ -1,42 +1,133 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
-{% block title %}{{ post.title }} - Mini Blog{% endblock %}
+{% block title %}{{ post.title }} - MiniBlog{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <a href="{% url 'posts:list_posts' %}" class="btn btn-sm btn-outline-secondary mb-3">
-            <i class="bi bi-arrow-left"></i> Back to All Posts
-        </a>
+<!-- Back Button -->
+<div class="mb-6" data-aos="fade-right">
+    <a href="{% url 'posts:list_posts' %}" class="inline-flex items-center text-blue-600 hover:text-indigo-600 font-semibold transition">
+        <i class="fas fa-arrow-left mr-2"></i>Back to All Posts
+    </a>
+</div>
+
+<!-- Article Container -->
+<div class="max-w-3xl mx-auto" data-aos="fade-up">
+    <article class="glass-effect rounded-2xl overflow-hidden">
+        <!-- Cover Image -->
+        {% if post.image %}
+            <div class="relative h-96 overflow-hidden bg-gradient-to-br from-blue-400 to-indigo-600">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            </div>
+        {% else %}
+            <div class="relative h-96 overflow-hidden bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-600 flex items-center justify-center">
+                <i class="fas fa-feather text-white text-6xl opacity-20"></i>
+            </div>
+        {% endif %}
         
-        <div class="card shadow">
-            {% if post.image %}
-                <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }} image" style="max-height: 420px; object-fit: cover;">
-            {% endif %}
-            <div class="card-body">
-                <h1 class="card-title">{{ post.title }}</h1>
-                <div class="text-muted mb-4">
-                    <i class="bi bi-person-circle"></i> By <strong>{{ post.author.username }}</strong> | 
-                    <i class="bi bi-calendar"></i> {{ post.created_at|date:"F d, Y" }} at {{ post.created_at|time:"g:i A" }}
+        <!-- Content -->
+        <div class="p-8 md:p-12">
+            <!-- Title -->
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                {{ post.title }}
+            </h1>
+            
+            <!-- Meta Information -->
+            <div class="flex flex-col md:flex-row md:items-center gap-4 pb-6 border-b-2 border-gray-200 mb-8">
+                <!-- Author -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white text-lg font-bold">
+                        {{ post.author.username|first|upper }}
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-900">{{ post.author.username }}</p>
+                        <p class="text-sm text-gray-500">Author</p>
+                    </div>
+                </div>
+                
+                <!-- Dates -->
+                <div class="md:ml-auto flex gap-8">
+                    <div>
+                        <p class="text-xs text-gray-500 uppercase tracking-wide">Published</p>
+                        <time datetime="{{ post.created_at|date:'c' }}" class="text-lg font-semibold text-gray-900">
+                            {{ post.created_at|date:"F d, Y" }}
+                        </time>
+                    </div>
                     {% if post.updated_at != post.created_at %}
-                        <br><i class="bi bi-pencil"></i> Updated: {{ post.updated_at|date:"F d, Y" }} at {{ post.updated_at|time:"g:i A" }}
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wide">Updated</p>
+                            <time datetime="{{ post.updated_at|date:'c' }}" class="text-lg font-semibold text-gray-900">
+                                {{ post.updated_at|date:"F d, Y" }}
+                            </time>
+                        </div>
                     {% endif %}
                 </div>
-                <hr>
-                <div class="post-content">
+            </div>
+            
+            <!-- Article Content -->
+            <div class="prose prose-lg max-w-none">
+                <div class="text-gray-800 leading-relaxed whitespace-pre-line text-lg">
                     {{ post.content|linebreaksbr }}
                 </div>
             </div>
+            
+            <!-- Reading Stats -->
+            <div class="mt-12 pt-8 border-t border-gray-200 flex items-center justify-between text-sm text-gray-600">
+                <div class="flex items-center space-x-4">
+                    <span><i class="fas fa-clock mr-2 text-blue-600"></i>~{{ post.content|wordcount }} words</span>
+                    <span><i class="fas fa-bars mr-2 text-blue-600"></i>~{{ post.content|length|divideby:200 }} min read</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer Actions -->
+        <div class="px-8 md:px-12 py-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-t border-gray-200 flex gap-4">
+            <a href="{% url 'posts:list_posts' %}" class="btn-secondary-custom">
+                <i class="fas fa-list mr-2"></i>View All Posts
+            </a>
+            {% if user == post.author %}
+                <button class="btn-primary-custom ml-auto" onclick="alert('Edit feature coming soon!')">
+                    <i class="fas fa-edit mr-2"></i>Edit Post
+                </button>
+            {% endif %}
+        </div>
+    </article>
+    
+    <!-- Related Posts Section -->
+    <div class="mt-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8" data-aos="fade-down">
+            More from <span class="gradient-text">{{ post.author.username }}</span>
+        </h2>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+            {% for p in post.author.posts.all|slice:":3" %}
+                {% if p.id != post.id %}
+                    <a href="{% url 'posts:post_detail' p.pk %}" class="group">
+                        <div class="glass-effect rounded-xl overflow-hidden card-hover" data-aos="fade-up">
+                            {% if p.image %}
+                                <div class="h-32 overflow-hidden bg-gradient-to-br from-blue-400 to-indigo-600">
+                                    <img src="{{ p.image.url }}" alt="{{ p.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                </div>
+                            {% else %}
+                                <div class="h-32 overflow-hidden bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center">
+                                    <i class="fas fa-feather text-white text-2xl opacity-30"></i>
+                                </div>
+                            {% endif %}
+                            <div class="p-4">
+                                <h3 class="font-bold text-gray-800 group-hover:text-blue-600 transition line-clamp-2 text-sm">
+                                    {{ p.title }}
+                                </h3>
+                                <p class="text-xs text-gray-500 mt-2">{{ p.created_at|date:"M d, Y" }}</p>
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+            {% empty %}
+                <p class="text-gray-500 col-span-3 text-center py-8">No other posts from this author yet</p>
+            {% endfor %}
         </div>
     </div>
 </div>
 
-{% block extra_css %}
-<style>
-    .post-content {
-        font-size: 1.1rem;
-        line-height: 1.8;
-    }
-</style>
-{% endblock %}
 {% endblock %}
