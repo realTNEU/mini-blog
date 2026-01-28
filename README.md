@@ -47,9 +47,9 @@ mini-blog/
 ### 1. Database Setup
 ```bash
 # MySQL database and user already created:
-# Database: miniblog
-# User: bloguser
-# Password: BlogMaster123@
+# Database: <db>
+# User: <user>
+# Password: <password>
 ```
 
 ### 2. Environment Variables
@@ -57,9 +57,9 @@ The `.env` file contains:
 ```
 SECRET_KEY=scikiq-task
 DEBUG=True
-DB_NAME=miniblog
-DB_USER=bloguser
-DB_PASSWORD=BlogMaster123@
+DB_NAME=<db>
+DB_USER=<user>
+DB_PASSWORD=<password>
 DB_HOST=localhost
 ```
 
