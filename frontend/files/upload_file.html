@@ -4,23 +4,18 @@
 
 {% block content %}
 <div class="upload-wrapper">
-    <!-- Header -->
     <div class="upload-header" data-aos="fade-down">
         <h1 class="upload-title gradient-text">Upload File</h1>
         <p class="upload-subtitle">Share documents, spreadsheets, images, and more</p>
     </div>
 
-    <!-- Upload Form -->
     <form method="post" enctype="multipart/form-data" id="uploadForm" class="upload-form glass-effect">
         {% csrf_token %}
         
-        <!-- File Input Area -->
         <div class="upload-section">
-            <!-- Drag and Drop Zone -->
             <div id="dropZone" class="upload-drop-zone">
                 <input type="file" id="file" name="file" class="upload-input" required>
                 
-                <!-- Default State -->
                 <div id="defaultState" class="upload-default-state">
                     <svg class="upload-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                         <defs>
@@ -47,7 +42,6 @@
                     </p>
                 </div>
                 
-                <!-- File Selected State -->
                 <div id="selectedState" class="upload-selected-state hidden">
                     <div class="upload-success-badge">
                         <svg class="upload-checkmark" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +64,6 @@
                 </div>
             </div>
             
-            <!-- Features List -->
             <div class="upload-features">
                 <div class="upload-feature-item">
                     <i class="fas fa-zap"></i>
@@ -87,7 +80,6 @@
             </div>
         </div>
         
-        <!-- Form Actions -->
         <div class="upload-actions">
             <a href="{% url 'files:list_files' %}" class="btn-secondary-custom">
                 <i class="fas fa-times"></i><span>Cancel</span>
@@ -98,7 +90,6 @@
         </div>
     </form>
 
-    <!-- File Type Guide -->
     <div class="upload-guide" data-aos="fade-up" data-aos-delay="200">
         <div class="upload-guide-item glass-effect">
             <div class="upload-guide-icon"><i class="fas fa-file-excel"></i></div>

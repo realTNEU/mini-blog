@@ -21,7 +21,6 @@ class UploadedFile(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
     uploader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='uploaded_files')
     
-    # Excel-specific fields
     excel_rows = models.IntegerField(null=True, blank=True)
     excel_columns = models.IntegerField(null=True, blank=True)
     excel_data = models.JSONField(null=True, blank=True, help_text='Stores Excel data preview as JSON')
@@ -34,7 +33,6 @@ class UploadedFile(models.Model):
         return self.file_name
     
     def get_excel_preview(self, max_rows=10):
-        """Get a preview of the first N rows of the Excel file"""
         if not self.excel_data:
             return None
         try:
@@ -53,7 +51,6 @@ class UploadedFile(models.Model):
             self.file_name = self.file.name
             self.file_size = self.file.size
             
-            # Determine file type
             ext = os.path.splitext(self.file.name)[1].lower()
             if ext in ['.xlsx', '.xls']:
                 self.file_type = 'excel'
@@ -66,28 +63,24 @@ class UploadedFile(models.Model):
             else:
                 self.file_type = 'other'
             
-            # Analyze Excel/CSV files without consuming the upload stream
             if self.file_type in ['excel', 'csv']:
                 try:
-                    # Read the entire file into memory
                     self.file.seek(0)
                     file_bytes = self.file.read()
                     buffer = BytesIO(file_bytes)
                     
-                    # Read with appropriate engine
                     if self.file_type == 'excel':
                         if ext == '.xlsx':
                             df = pd.read_excel(buffer, engine='openpyxl')
-                        else:  # .xls
+                        else:
                             df = pd.read_excel(buffer, engine='xlrd')
-                    else:  # csv
+                    else:
                         df = pd.read_csv(buffer)
                     
                     self.excel_rows = len(df)
                     self.excel_columns = len(df.columns)
                     self.excel_columns_list = df.columns.tolist()
                     
-                    # Store preview data as JSON (convert NaN to None for JSON serialization)
                     preview_rows = df.head(10).replace({pd.NA: None, pd.NaT: None}).fillna('').values.tolist()
                     
                     preview_data = {
@@ -98,14 +91,12 @@ class UploadedFile(models.Model):
                     }
                     self.excel_data = json.dumps(preview_data)
                     
-                    # Reset file pointer for saving
                     self.file.seek(0)
                 except Exception as e:
                     print(f"Error processing file: {e}")
                     import traceback
                     traceback.print_exc()
                 finally:
-                    # Ensure file pointer is at the beginning for saving
                     try:
                         self.file.seek(0)
                     except:

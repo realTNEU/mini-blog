@@ -5,16 +5,13 @@
 
 {% block content %}
 <div class="post-detail-wrapper">
-    <!-- Back Button -->
     <div class="post-back-button" data-aos="fade-right">
         <a href="{% url 'posts:list_posts' %}" class="back-link">
             <i class="fas fa-arrow-left"></i><span>Back to All Posts</span>
         </a>
     </div>
 
-    <!-- Article Container -->
     <article class="post-article glass-effect" data-aos="fade-up">
-        <!-- Cover Image -->
         <div class="post-cover">
             {% if post.image %}
                 <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-cover-image">
@@ -26,16 +23,12 @@
             {% endif %}
         </div>
         
-        <!-- Content -->
         <div class="post-body">
-            <!-- Title -->
             <h1 class="post-title">
                 {{ post.title }}
             </h1>
             
-            <!-- Meta Information -->
             <div class="post-meta">
-                <!-- Author -->
                 <div class="post-author">
                     <div class="post-author-avatar">
                         {{ post.author.username|first|upper }}
@@ -46,7 +39,6 @@
                     </div>
                 </div>
                 
-                <!-- Dates -->
                 <div class="post-dates">
                     <div class="post-date">
                         <p class="post-date-label">Published</p>
@@ -65,12 +57,10 @@
                 </div>
             </div>
             
-            <!-- Article Content -->
             <div class="post-content">
                 {{ post.content|linebreaksbr }}
             </div>
             
-            <!-- Reading Stats -->
             <div class="post-stats">
                 <div class="post-stats-items">
                     <span class="post-stat-item">
@@ -85,7 +75,6 @@
             </div>
         </div>
         
-        <!-- Footer Actions -->
         <div class="post-footer">
             <a href="{% url 'posts:list_posts' %}" class="btn-secondary-custom">
                 <i class="fas fa-list"></i><span>View All Posts</span>
@@ -98,7 +87,6 @@
         </div>
     </article>
     
-    <!-- Related Posts Section -->
     <div class="post-related-section">
         <h2 class="post-related-title" data-aos="fade-down">
             More from <span class="gradient-text">{{ post.author.username }}</span>

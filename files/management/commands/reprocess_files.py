@@ -19,27 +19,23 @@ class Command(BaseCommand):
         
         for file_obj in files:
             try:
-                # Open the file
                 with file_obj.file.open('rb') as f:
                     file_bytes = f.read()
                     buffer = BytesIO(file_bytes)
                     
-                    # Read with appropriate method
                     if file_obj.file_type == 'excel':
                         ext = file_obj.file_name.lower().split('.')[-1]
                         if ext == 'xlsx':
                             df = pd.read_excel(buffer, engine='openpyxl')
-                        else:  # xls
+                        else:
                             df = pd.read_excel(buffer, engine='xlrd')
-                    else:  # csv
+                    else:
                         df = pd.read_csv(buffer)
                     
-                    # Update fields
                     file_obj.excel_rows = len(df)
                     file_obj.excel_columns = len(df.columns)
                     file_obj.excel_columns_list = df.columns.tolist()
                     
-                    # Store preview data as JSON
                     preview_rows = df.head(10).replace({pd.NA: None, pd.NaT: None}).fillna('').values.tolist()
                     
                     preview_data = {
@@ -50,7 +46,6 @@ class Command(BaseCommand):
                     }
                     file_obj.excel_data = json.dumps(preview_data)
                     
-                    # Save without triggering the save method again
                     UploadedFile.objects.filter(pk=file_obj.pk).update(
                         excel_rows=file_obj.excel_rows,
                         excel_columns=file_obj.excel_columns,

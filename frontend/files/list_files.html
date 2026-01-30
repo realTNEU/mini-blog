@@ -4,7 +4,6 @@
 {% block title %}All Files - MiniBlog{% endblock %}
 
 {% block content %}
-<!-- Header Section -->
 <div class="files-header" data-aos="fade-down">
     <div class="files-header-content">
         <div>
@@ -19,13 +18,10 @@
     </div>
 </div>
 
-<!-- Files Display -->
 {% if files %}
-    <!-- File Cards Grid -->
     <div class="files-grid" data-aos="fade-up">
         {% for file in files %}
             <div class="file-item glass-effect card-hover" data-aos="fade-up">
-                <!-- File Header -->
                 <div class="file-item-header">
                     <div class="file-item-icon-wrapper file-item-icon-{{ file.file_type }}">
                         <i class="fas {{ file.file_type|file_icon }}"></i>
@@ -36,7 +32,6 @@
                     </div>
                 </div>
 
-                <!-- File Stats -->
                 <div class="file-item-stats">
                     <div class="file-stat">
                         <i class="fas fa-database"></i>
@@ -54,13 +49,11 @@
                     {% endif %}
                 </div>
 
-                <!-- File Metadata -->
                 <div class="file-item-meta">
                     <p class="file-item-date">{{ file.upload_date|date:"M d, Y" }}</p>
                     <p class="file-item-uploader">by <strong>{{ file.uploader.username }}</strong></p>
                 </div>
 
-                <!-- Action Buttons -->
                 <div class="file-item-actions">
                     <a href="{{ file.file.url }}" target="_blank" class="file-action-btn file-download-btn" title="Download file">
                         <i class="fas fa-download"></i><span>Download</span>
@@ -72,7 +65,6 @@
                     {% endif %}
                 </div>
 
-                <!-- Excel Data Preview (Hidden by default) -->
                 {% if file.excel_data %}
                     <div class="file-excel-preview hidden" id="preview-{{ file.id }}">
                         <div class="file-preview-header">
@@ -106,7 +98,6 @@
         {% endfor %}
     </div>
     
-    <!-- Stats -->
     <div class="files-stats" data-aos="fade-up" data-aos-delay="300">
         <div class="file-stat-card glass-effect">
             <div class="file-stat-card-icon">
@@ -133,7 +124,6 @@
         </div>
     </div>
 {% else %}
-    <!-- Empty State -->
     <div class="files-empty" data-aos="fade-up">
         <div class="files-empty-content">
             <div class="files-empty-icon">

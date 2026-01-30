@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="container" style="max-width: 500px; padding-top: 3rem; padding-bottom: 3rem;" data-aos="fade-up">
-    <!-- Illustration -->
     <div class="text-center mb-4">
         <div style="display: inline-flex; align-items: center; justify-content: center; width: 4rem; height: 4rem; background: linear-gradient(135deg, #2563eb, #4f46e5); border-radius: 1rem; margin-bottom: 1rem;">
             <i class="fas fa-sign-in-alt" style="color: white; font-size: 1.5rem;"></i>
@@ -12,12 +11,9 @@
         <h1 class="gradient-text">Welcome Back</h1>
         <p style="color: var(--text-muted); margin-top: 0.5rem;">Sign in to your account to continue</p>
     </div>
-
-    <!-- Login Form -->
     <form method="post" id="loginForm" class="card card-body">
         {% csrf_token %}
         
-        <!-- Username -->
         <div class="form-group">
             <label for="username" class="form-label">
                 <i class="fas fa-user" style="color: #2563eb; margin-right: 0.5rem;"></i>Username
@@ -32,7 +28,6 @@
             >
         </div>
         
-        <!-- Password -->
         <div class="form-group">
             <label for="password" class="form-label">
                 <i class="fas fa-lock" style="color: #2563eb; margin-right: 0.5rem;"></i>Password
@@ -47,7 +42,6 @@
             >
         </div>
         
-        <!-- Remember Me -->
         <div style="margin-bottom: 1.5rem;">
             <label style="display: flex; align-items: center; cursor: pointer;">
                 <input type="checkbox" id="remember" style="width: 1rem; height: 1rem; margin-right: 0.5rem; cursor: pointer;">
@@ -55,13 +49,11 @@
             </label>
         </div>
         
-        <!-- Submit Button -->
         <button type="submit" class="btn btn-primary w-full">
             <i class="fas fa-arrow-right" style="margin-right: 0.5rem;"></i>Sign In
         </button>
     </form>
 
-    <!-- Sign Up Link -->
     <div class="text-center mt-3">
         <p style="color: var(--text);">
             Don't have an account? 
@@ -71,7 +63,6 @@
         </p>
     </div>
 
-    <!-- Divider with ornament -->
     <div class="text-center mt-4" style="color: #9ca3af; font-size: 0.875rem;">
         <i class="fas fa-feather-alt"></i>
     </div>

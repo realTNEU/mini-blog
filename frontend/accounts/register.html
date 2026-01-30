@@ -5,7 +5,6 @@
 {% block content %}
 <div class="container" style="max-width: 520px; padding-top: 3rem; padding-bottom: 3rem;">
     <div data-aos="fade-up">
-        <!-- Illustration -->
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl mb-4">
                 <i class="fas fa-user-plus text-white text-2xl"></i>
@@ -14,11 +13,9 @@
             <p style="color: var(--text-muted); margin-top: 0.5rem;">Create your account and start sharing your stories</p>
         </div>
 
-        <!-- Register Form -->
         <form method="post" id="registerForm" class="card card-body glass-effect">
             {% csrf_token %}
             
-            <!-- Username -->
             <div class="form-group">
                 <label for="username" class="form-label">
                     <i class="fas fa-user" style="margin-right: 0.5rem; color: var(--success);"></i>Username
@@ -34,7 +31,6 @@
                 <p class="form-text">3-30 characters, letters and numbers only</p>
             </div>
             
-            <!-- Email -->
             <div class="form-group">
                 <label for="email" class="form-label">
                     <i class="fas fa-envelope" style="margin-right: 0.5rem; color: var(--success);"></i>Email Address
@@ -49,7 +45,6 @@
                 >
             </div>
             
-            <!-- Password -->
             <div class="form-group">
                 <label for="password" class="form-label">
                     <i class="fas fa-lock" style="margin-right: 0.5rem; color: var(--success);"></i>Password
@@ -65,7 +60,6 @@
                 <p class="form-text">Minimum 8 characters recommended</p>
             </div>
             
-            <!-- Confirm Password -->
             <div class="form-group">
                 <label for="password_confirm" class="form-label">
                     <i class="fas fa-check-circle" style="margin-right: 0.5rem; color: var(--success);"></i>Confirm Password
@@ -83,13 +77,11 @@
                 </div>
             </div>
             
-            <!-- Submit Button -->
             <button type="submit" class="btn btn-success w-full">
                 <i class="fas fa-plus mr-2"></i>Create Account
             </button>
         </form>
 
-        <!-- Login Link -->
         <div class="text-center mt-6">
             <p style="color: var(--text);">
                 Already have an account? 
@@ -106,7 +98,6 @@
 {% block extra_js %}
 <script>
 $(document).ready(function() {
-    // Real-time password match validation
     $('#password_confirm').on('input', function() {
         const password = $('#password').val();
         const confirm = $(this).val();
