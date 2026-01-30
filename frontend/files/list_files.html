@@ -83,7 +83,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="preview-body-{{ file.id }}">
-                                    <!-- Will be populated by JavaScript -->
                                 </tbody>
                             </table>
                         </div>
@@ -177,7 +176,6 @@ function closeExcelPreview(fileId) {
 function loadExcelPreview(fileId) {
     const tbody = document.getElementById(`preview-body-${fileId}`);
     if (tbody && tbody.children.length === 0) {
-        // Get data from data attribute
         const previewDiv = document.getElementById(`preview-${fileId}`);
         const excelDataStr = previewDiv.dataset.excelData;
         
@@ -203,13 +201,11 @@ function loadExcelPreview(fileId) {
 }
 
 $(document).ready(function() {
-    // Format all file sizes
     $('.file-size').each(function() {
         const size = parseInt($(this).data('size'));
         $(this).text(formatBytes(size));
     });
     
-    // Calculate stats
     let totalSize = 0;
     const uploaders = new Set();
     

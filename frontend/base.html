@@ -6,25 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}MiniBlog{% endblock %}</title>
     
-    <!-- jQuery (Load First!) -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
-    <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- AOS (Animate On Scroll) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'custom.css' %}">
     
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <!-- Logo -->
             <a href="{% url 'home' %}" class="nav-brand">
                 <div class="nav-logo">
                     <i class="fas fa-feather"></i>
@@ -32,14 +26,12 @@
                 <span class="gradient-text" style="font-size: 1.25rem; font-weight: 700;">MiniBlog</span>
             </a>
             
-            <!-- Mobile Menu Toggle -->
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
             
-            <!-- Navigation Links -->
             <ul class="nav-links" id="navLinks">
                 <li><a href="{% url 'posts:list_posts' %}" class="nav-link"><i class="fas fa-newspaper"></i> Posts</a></li>
                 <li><a href="{% url 'files:list_files' %}" class="nav-link"><i class="fas fa-folder"></i> Files</a></li>
@@ -48,7 +40,6 @@
                     <li><a href="{% url 'posts:create_post' %}" class="nav-link"><i class="fas fa-pen-fancy"></i> Write</a></li>
                     <li><a href="{% url 'files:upload_file' %}" class="nav-link"><i class="fas fa-cloud-upload-alt"></i> Upload</a></li>
                     
-                    <!-- User Dropdown -->
                     <li class="nav-dropdown">
                         <a href="#" class="nav-link">
                             <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
@@ -74,12 +65,10 @@
     </nav>
 
     <main>
-        <!-- Alert Messages -->
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}info{% endif %}">
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% else %}info-circle{% endif %}"></i>
                         <span>{{ message }}</span>
                     </div>
                     <button onclick="this.parentElement.remove()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: inherit;">×</button>
@@ -90,24 +79,20 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- AOS Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     
     <script>
-        // Initialize AOS
         AOS.init({
             duration: 800,
             once: true,
             offset: 100
         });
         
-        // Mobile menu toggle
         function toggleMobileMenu() {
             const navLinks = document.getElementById('navLinks');
             navLinks.classList.toggle('active');
         }
         
-        // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             const nav = document.querySelector('nav');
             const navLinks = document.getElementById('navLinks');

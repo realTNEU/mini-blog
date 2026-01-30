@@ -2270,6 +2270,10 @@ footer a:hover {
     flex-shrink: 0;
 }
 
+.file-item-emoji {
+    font-size: 1.75rem;
+}
+
 .file-item-icon-excel {
     background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.08));
     color: #10b981;
@@ -3046,6 +3050,230 @@ footer a:hover {
 ::selection {
     background: var(--primary);
     color: white;
+}
+
+/* ===== CREATE POST PAGE ===== */
+.create-post-wrapper {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: var(--space-8);
+}
+
+.create-post-header {
+    margin-bottom: var(--space-8);
+    text-align: center;
+}
+
+.create-post-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: var(--space-2);
+    letter-spacing: -0.025em;
+}
+
+.create-post-subtitle {
+    font-size: 1rem;
+    color: var(--gray-600);
+    margin-top: var(--space-4);
+}
+
+.create-post-form {
+    border-radius: 1.5rem;
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.create-post-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-post-label {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: var(--space-3);
+}
+
+.create-post-input,
+.create-post-textarea {
+    padding: 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: var(--gray-900);
+}
+
+.create-post-input:focus,
+.create-post-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.create-post-input::placeholder,
+.create-post-textarea::placeholder {
+    color: var(--gray-500);
+}
+
+.create-post-textarea {
+    resize: vertical;
+    min-height: 12rem;
+    font-family: var(--font-sans);
+}
+
+.create-post-help {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+    margin-top: var(--space-2);
+}
+
+.create-post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-2);
+}
+
+.create-post-counter {
+    font-weight: 600;
+    color: var(--gray-600);
+}
+
+.create-post-count {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.create-post-input-hidden {
+    display: none;
+}
+
+.create-post-image-zone {
+    border: 2px dashed var(--gray-300);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.create-post-image-zone:hover {
+    border-color: var(--primary);
+    background: rgba(37, 99, 235, 0.05);
+}
+
+.create-post-image-zone-active {
+    border-color: var(--primary);
+    background: rgba(37, 99, 235, 0.1);
+}
+
+.create-post-image-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.create-post-preview-img {
+    max-height: 12rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-md);
+}
+
+.create-post-upload-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.create-post-upload-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.create-post-upload-hint {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+}
+
+.create-post-upload-btn-wrapper {
+    margin-top: var(--space-4);
+}
+
+.create-post-actions {
+    display: flex;
+    gap: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--gray-200);
+    margin-top: var(--space-6);
+}
+
+.create-post-submit {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-post-tips {
+    margin-top: var(--space-12);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-6);
+}
+
+.create-post-tip {
+    border-radius: 1.5rem;
+    padding: var(--space-6);
+    text-align: center;
+}
+
+.create-post-tip-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: var(--space-2);
+}
+
+.create-post-tip-text {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .create-post-wrapper {
+        padding: var(--space-4);
+    }
+    
+    .create-post-title {
+        font-size: 1.875rem;
+    }
+    
+    .create-post-form {
+        padding: var(--space-6);
+    }
+    
+    .create-post-actions {
+        flex-direction: column;
+    }
+    
+    .create-post-tips {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ===== REDUCED MOTION ===== */

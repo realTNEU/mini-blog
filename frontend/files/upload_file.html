@@ -157,7 +157,6 @@ $(document).ready(function() {
     const dropZone = $('#dropZone');
     const fileInput = $('#file');
     
-    // Drag and drop events
     dropZone.on('dragover dragenter', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -180,12 +179,10 @@ $(document).ready(function() {
         }
     });
     
-    // Click to select
     dropZone.click(function() {
         fileInput.click();
     });
     
-    // File selected
     fileInput.on('change', function() {
         if (this.files && this.files[0]) {
             const file = this.files[0];
@@ -199,7 +196,6 @@ $(document).ready(function() {
         }
     });
     
-    // Form submit
     $('#uploadForm').submit(function(e) {
         if (!fileInput[0].files || !fileInput[0].files[0]) {
             e.preventDefault();

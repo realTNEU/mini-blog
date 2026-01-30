@@ -29,7 +29,6 @@ def divideby(value, arg):
         if denominator == 0:
             return 0
         result = numerator / denominator
-        # Reading-time style outputs are nicer as an int
         return int(result) if result >= 0 else int(result)
     except (TypeError, ValueError):
         return 0
