@@ -3,115 +3,126 @@
 {% block title %}Upload File - MiniBlog{% endblock %}
 
 {% block content %}
-<!-- Header -->
-<div class="mb-8" data-aos="fade-down">
-    <h1 class="text-4xl font-bold gradient-text mb-2">Upload File</h1>
-    <p class="text-gray-600">Share documents, spreadsheets, images, and more</p>
-</div>
+<div class="upload-wrapper">
+    <!-- Header -->
+    <div class="upload-header" data-aos="fade-down">
+        <h1 class="upload-title gradient-text">Upload File</h1>
+        <p class="upload-subtitle">Share documents, spreadsheets, images, and more</p>
+    </div>
 
-<!-- Upload Form -->
-<div class="max-w-2xl mx-auto" data-aos="fade-up">
-    <form method="post" enctype="multipart/form-data" id="uploadForm" class="glass-effect rounded-2xl p-8 space-y-6">
+    <!-- Upload Form -->
+    <form method="post" enctype="multipart/form-data" id="uploadForm" class="upload-form glass-effect">
         {% csrf_token %}
         
         <!-- File Input Area -->
-        <div>
-            <label for="file" class="block text-lg font-semibold text-gray-800 mb-4">
-                <i class="fas fa-file-upload mr-2 text-blue-600"></i>Choose File
-            </label>
-            
+        <div class="upload-section">
             <!-- Drag and Drop Zone -->
-            <div id="dropZone" class="border-3 border-dashed border-gray-300 rounded-2xl p-12 text-center cursor-pointer hover:border-blue-600 hover:bg-blue-50 transition group">
-                <input type="file" id="file" name="file" class="hidden" required>
+            <div id="dropZone" class="upload-drop-zone">
+                <input type="file" id="file" name="file" class="upload-input" required>
                 
                 <!-- Default State -->
-                <div id="defaultState" class="space-y-3">
-                    <div class="flex justify-center">
-                        <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full group-hover:bg-blue-200 transition">
-                            <i class="fas fa-cloud-upload-alt text-3xl text-blue-600"></i>
-                        </div>
-                    </div>
-                    <p class="text-xl font-semibold text-gray-800">Drag and drop your file</p>
-                    <p class="text-gray-600">or click to browse your files</p>
-                    <div style="margin-top: 1rem;">
-                        <button
-                            type="button"
-                            class="btn-secondary-custom"
-                            onclick="event.stopPropagation(); document.getElementById('file').click();"
-                            aria-label="Browse files to upload"
-                        >
-                            <i class="fas fa-folder-open mr-2"></i>Browse files
-                        </button>
-                    </div>
-                    <p class="text-sm text-gray-500 mt-2">
-                        <i class="fas fa-info-circle mr-1"></i>
-                        Excel, CSV, PDF, Images, and more supported
+                <div id="defaultState" class="upload-default-state">
+                    <svg class="upload-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:var(--primary);stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:var(--secondary);stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M 50 20 L 75 50 M 50 20 L 25 50 M 50 20 L 50 70" stroke="url(#iconGradient)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M 20 75 L 80 75" stroke="url(#iconGradient)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <h3 class="upload-text-primary">Drop your file here</h3>
+                    <p class="upload-text-secondary">or</p>
+                    <button
+                        type="button"
+                        class="btn-primary-custom upload-browse-btn"
+                        onclick="event.stopPropagation(); document.getElementById('file').click();"
+                        aria-label="Browse files to upload"
+                    >
+                        <i class="fas fa-folder-open"></i><span>Browse Files</span>
+                    </button>
+                    <p class="upload-text-hint">
+                        <span>Excel, CSV, PDF, Images, and more supported</span>
                     </p>
                 </div>
                 
                 <!-- File Selected State -->
-                <div id="selectedState" class="hidden space-y-4">
-                    <div class="flex justify-center">
-                        <div id="fileIcon" class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full">
-                            <i class="fas fa-check text-3xl text-green-600"></i>
+                <div id="selectedState" class="upload-selected-state hidden">
+                    <div class="upload-success-badge">
+                        <svg class="upload-checkmark" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 5 12 L 10 17 L 19 7" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <p class="upload-selected-label">File Ready to Upload</p>
+                    <div class="upload-file-card">
+                        <div class="upload-file-icon-small">
+                            <i id="fileIcon" class="fas fa-file"></i>
+                        </div>
+                        <div class="upload-file-details">
+                            <p id="fileName" class="upload-file-name"></p>
+                            <p id="fileSize" class="upload-file-size"></p>
                         </div>
                     </div>
-                    <div class="text-left bg-white rounded-xl p-4 border border-gray-200">
-                        <p class="text-sm text-gray-500 mb-1">File Selected</p>
-                        <p id="fileName" class="text-lg font-bold text-gray-900"></p>
-                        <p id="fileSize" class="text-sm text-gray-600 mt-1"></p>
-                    </div>
-                    <button type="button" class="btn-secondary-custom" onclick="event.stopPropagation(); resetFile()">
-                        <i class="fas fa-times mr-2"></i>Choose Different File
+                    <button type="button" class="upload-change-btn" onclick="event.stopPropagation(); resetFile()">
+                        <i class="fas fa-plus-circle"></i><span>Choose Different File</span>
                     </button>
                 </div>
             </div>
             
-            <!-- File Info -->
-            <div class="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-200">
-                <p class="text-sm text-gray-700">
-                    <i class="fas fa-lightbulb mr-2 text-blue-600"></i>
-                    <strong>Pro Tip:</strong> Excel and CSV files will be automatically analyzed to show row and column counts!
-                </p>
+            <!-- Features List -->
+            <div class="upload-features">
+                <div class="upload-feature-item">
+                    <i class="fas fa-zap"></i>
+                    <p>Fast & Secure</p>
+                </div>
+                <div class="upload-feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <p>Privacy First</p>
+                </div>
+                <div class="upload-feature-item">
+                    <i class="fas fa-sparkles"></i>
+                    <p>Auto Analysis</p>
+                </div>
             </div>
         </div>
         
         <!-- Form Actions -->
-        <div class="flex gap-4 pt-6 border-t border-gray-200">
+        <div class="upload-actions">
             <a href="{% url 'files:list_files' %}" class="btn-secondary-custom">
-                <i class="fas fa-times mr-2"></i>Cancel
+                <i class="fas fa-times"></i><span>Cancel</span>
             </a>
-            <button type="submit" id="submitBtn" class="btn-primary-custom flex-1 justify-center" disabled>
-                <i class="fas fa-check-circle mr-2"></i>Upload File
+            <button type="submit" id="submitBtn" class="btn-primary-custom upload-submit-btn" disabled>
+                <i class="fas fa-check-circle"></i><span>Upload File</span>
             </button>
         </div>
     </form>
-</div>
 
-<!-- File Type Guide -->
-<div class="max-w-2xl mx-auto mt-12 grid md:grid-cols-4 gap-4" data-aos="fade-up" data-aos-delay="200">
-    <div class="glass-effect rounded-xl p-4 text-center">
-        <div class="text-2xl mb-2"><i class="fas fa-file-excel text-green-600"></i></div>
-        <p class="font-semibold text-gray-800 text-sm">Excel</p>
-        <p class="text-xs text-gray-600">.xlsx, .xls</p>
-    </div>
-    
-    <div class="glass-effect rounded-xl p-4 text-center">
-        <div class="text-2xl mb-2"><i class="fas fa-table text-blue-600"></i></div>
-        <p class="font-semibold text-gray-800 text-sm">CSV</p>
-        <p class="text-xs text-gray-600">.csv</p>
-    </div>
-    
-    <div class="glass-effect rounded-xl p-4 text-center">
-        <div class="text-2xl mb-2"><i class="fas fa-file-pdf text-red-600"></i></div>
-        <p class="font-semibold text-gray-800 text-sm">PDF</p>
-        <p class="text-xs text-gray-600">.pdf</p>
-    </div>
-    
-    <div class="glass-effect rounded-xl p-4 text-center">
-        <div class="text-2xl mb-2"><i class="fas fa-image text-purple-600"></i></div>
-        <p class="font-semibold text-gray-800 text-sm">Images</p>
-        <p class="text-xs text-gray-600">.jpg, .png, .gif</p>
+    <!-- File Type Guide -->
+    <div class="upload-guide" data-aos="fade-up" data-aos-delay="200">
+        <div class="upload-guide-item glass-effect">
+            <div class="upload-guide-icon"><i class="fas fa-file-excel"></i></div>
+            <p class="upload-guide-name">Excel</p>
+            <p class="upload-guide-ext">.xlsx, .xls</p>
+        </div>
+        
+        <div class="upload-guide-item glass-effect">
+            <div class="upload-guide-icon"><i class="fas fa-table"></i></div>
+            <p class="upload-guide-name">CSV</p>
+            <p class="upload-guide-ext">.csv</p>
+        </div>
+        
+        <div class="upload-guide-item glass-effect">
+            <div class="upload-guide-icon"><i class="fas fa-file-pdf"></i></div>
+            <p class="upload-guide-name">PDF</p>
+            <p class="upload-guide-ext">.pdf</p>
+        </div>
+        
+        <div class="upload-guide-item glass-effect">
+            <div class="upload-guide-icon"><i class="fas fa-image"></i></div>
+            <p class="upload-guide-name">Images</p>
+            <p class="upload-guide-ext">.jpg, .png, .gif</p>
+        </div>
     </div>
 </div>
 
@@ -130,18 +141,18 @@ function formatBytes(bytes) {
 function getFileIcon(filename) {
     const ext = filename.split('.').pop().toLowerCase();
     const icons = {
-        'xlsx': 'fa-file-excel text-green-600',
-        'xls': 'fa-file-excel text-green-600',
-        'csv': 'fa-table text-blue-600',
-        'pdf': 'fa-file-pdf text-red-600',
-        'jpg': 'fa-image text-purple-600',
-        'jpeg': 'fa-image text-purple-600',
-        'png': 'fa-image text-purple-600',
-        'gif': 'fa-image text-purple-600',
-        'doc': 'fa-file-word text-blue-600',
-        'docx': 'fa-file-word text-blue-600',
+        'xlsx': 'fa-file-excel upload-icon-excel',
+        'xls': 'fa-file-excel upload-icon-excel',
+        'csv': 'fa-table upload-icon-csv',
+        'pdf': 'fa-file-pdf upload-icon-pdf',
+        'jpg': 'fa-image upload-icon-image',
+        'jpeg': 'fa-image upload-icon-image',
+        'png': 'fa-image upload-icon-image',
+        'gif': 'fa-image upload-icon-image',
+        'doc': 'fa-file-word upload-icon-word',
+        'docx': 'fa-file-word upload-icon-word',
     };
-    return icons[ext] || 'fa-file text-gray-600';
+    return icons[ext] || 'fa-file upload-icon-generic';
 }
 
 function resetFile() {
@@ -159,18 +170,18 @@ $(document).ready(function() {
     dropZone.on('dragover dragenter', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        dropZone.addClass('border-blue-600 bg-blue-50');
+        dropZone.addClass('upload-drag-active');
     });
     
     dropZone.on('dragleave', function(e) {
         e.preventDefault();
-        dropZone.removeClass('border-blue-600 bg-blue-50');
+        dropZone.removeClass('upload-drag-active');
     });
     
     dropZone.on('drop', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        dropZone.removeClass('border-blue-600 bg-blue-50');
+        dropZone.removeClass('upload-drag-active');
         const files = e.originalEvent.dataTransfer.files;
         if (files.length > 0) {
             fileInput[0].files = files;
@@ -189,7 +200,7 @@ $(document).ready(function() {
             const file = this.files[0];
             $('#fileName').text(file.name);
             $('#fileSize').text(formatBytes(file.size));
-            $('#fileIcon').html('<i class="fas ' + getFileIcon(file.name) + ' text-2xl"></i>');
+            $('#fileIcon').html('<i class="fas ' + getFileIcon(file.name) + ' upload-icon-selected"></i>');
             
             $('#defaultState').addClass('hidden');
             $('#selectedState').removeClass('hidden');
@@ -206,7 +217,7 @@ $(document).ready(function() {
         }
         
         const btn = $('#submitBtn');
-        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i>Uploading...');
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i><span>Uploading...</span>');
     });
 });
 </script>
