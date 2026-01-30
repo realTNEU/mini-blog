@@ -5,15 +5,15 @@
 
 {% block content %}
 <!-- Header Section -->
-<div class="mb-12" data-aos="fade-down">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+<div class="files-header" data-aos="fade-down">
+    <div class="files-header-content">
         <div>
-            <h1 class="text-4xl font-bold gradient-text mb-2">File Library</h1>
-            <p class="text-gray-600 text-lg">Browse and download files shared by the community</p>
+            <h1 class="files-title gradient-text">File Library</h1>
+            <p class="files-subtitle">Browse and download files shared by the community</p>
         </div>
         {% if user.is_authenticated %}
-            <a href="{% url 'files:upload_file' %}" class="btn-primary-custom justify-start md:justify-center">
-                <i class="fas fa-cloud-upload-alt mr-2"></i>Upload File
+            <a href="{% url 'files:upload_file' %}" class="btn-primary-custom">
+                <i class="fas fa-cloud-upload-alt"></i><span>Upload File</span>
             </a>
         {% endif %}
     </div>
@@ -21,171 +21,133 @@
 
 <!-- Files Display -->
 {% if files %}
-    <!-- Desktop Table View -->
-    <div class="hidden lg:block" data-aos="fade-up">
-        <div class="glass-effect rounded-2xl overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead>
-                        <tr class="bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-gray-200">
-                            <th class="px-6 py-4 text-left font-bold text-gray-800"><i class="fas fa-file mr-2 text-blue-600"></i>File Name</th>
-                            <th class="px-6 py-4 text-left font-bold text-gray-800"><i class="fas fa-tag mr-2 text-blue-600"></i>Type</th>
-                            <th class="px-6 py-4 text-left font-bold text-gray-800"><i class="fas fa-database mr-2 text-blue-600"></i>Size</th>
-                            <th class="px-6 py-4 text-center font-bold text-gray-800"><i class="fas fa-rows mr-2 text-blue-600"></i>Rows</th>
-                            <th class="px-6 py-4 text-center font-bold text-gray-800"><i class="fas fa-columns mr-2 text-blue-600"></i>Cols</th>
-                            <th class="px-6 py-4 text-left font-bold text-gray-800"><i class="fas fa-calendar mr-2 text-blue-600"></i>Upload Date</th>
-                            <th class="px-6 py-4 text-left font-bold text-gray-800"><i class="fas fa-user mr-2 text-blue-600"></i>Uploader</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for file in files %}
-                            <tr class="border-b border-gray-200 hover:bg-blue-50 transition group">
-                                <!-- File Name -->
-                                <td class="px-6 py-4">
-                                    <a href="{{ file.file.url }}" target="_blank" class="flex items-center space-x-3 text-blue-600 hover:text-indigo-600 font-semibold group-hover:font-bold transition">
-                                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <i class="fas {{ file.file_type|file_icon }} text-blue-600"></i>
-                                        </div>
-                                        <span class="truncate">{{ file.file_name }}</span>
-                                    </a>
-                                </td>
-                                
-                                <!-- Type -->
-                                <td class="px-6 py-4">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-gradient-to-r {% if file.file_type == 'excel' %}from-green-100 to-green-200 text-green-800{% elif file.file_type == 'csv' %}from-blue-100 to-blue-200 text-blue-800{% elif file.file_type == 'pdf' %}from-red-100 to-red-200 text-red-800{% elif file.file_type == 'image' %}from-purple-100 to-purple-200 text-purple-800{% else %}from-gray-100 to-gray-200 text-gray-800{% endif %}">
-                                        {{ file.get_file_type_display }}
-                                    </span>
-                                </td>
-                                
-                                <!-- Size -->
-                                <td class="px-6 py-4 font-medium text-gray-700 file-size" data-size="{{ file.file_size }}"></td>
-                                
-                                <!-- Rows -->
-                                <td class="px-6 py-4 text-center">
-                                    {% if file.excel_rows %}
-                                        <span class="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full font-bold text-sm">{{ file.excel_rows }}</span>
-                                    {% else %}
-                                        <span class="text-gray-400">—</span>
-                                    {% endif %}
-                                </td>
-                                
-                                <!-- Columns -->
-                                <td class="px-6 py-4 text-center">
-                                    {% if file.excel_columns %}
-                                        <span class="inline-flex items-center justify-center w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full font-bold text-sm">{{ file.excel_columns }}</span>
-                                    {% else %}
-                                        <span class="text-gray-400">—</span>
-                                    {% endif %}
-                                </td>
-                                
-                                <!-- Upload Date -->
-                                <td class="px-6 py-4 text-gray-600 text-sm">{{ file.upload_date|date:"M d, Y" }}</td>
-                                
-                                <!-- Uploader -->
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center space-x-2">
-                                        <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                                            {{ file.uploader.username|first|upper }}
-                                        </div>
-                                        <span class="text-gray-700 font-medium">{{ file.uploader.username }}</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mobile Card View -->
-    <div class="lg:hidden grid gap-4" data-aos="fade-up">
+    <!-- File Cards Grid -->
+    <div class="files-grid" data-aos="fade-up">
         {% for file in files %}
-            <a href="{{ file.file.url }}" target="_blank" class="file-card glass-effect card-hover" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
-                <div class="file-card-header">
-                    <div class="file-card-icon file-card-icon-{% if file.file_type == 'excel' %}excel{% elif file.file_type == 'csv' %}csv{% elif file.file_type == 'pdf' %}pdf{% elif file.file_type == 'image' %}image{% else %}other{% endif %}">
+            <div class="file-item glass-effect card-hover" data-aos="fade-up">
+                <!-- File Header -->
+                <div class="file-item-header">
+                    <div class="file-item-icon-wrapper file-item-icon-{{ file.file_type }}">
                         <i class="fas {{ file.file_type|file_icon }}"></i>
                     </div>
-
-                    <div class="file-card-title">
-                        <div class="file-card-name">{{ file.file_name }}</div>
-                        <div class="file-card-type">{{ file.get_file_type_display }}</div>
-                    </div>
-
-                    <div class="file-card-action" aria-hidden="true" title="Download">
-                        <i class="fas fa-download"></i>
+                    <div class="file-item-info">
+                        <h3 class="file-item-name" title="{{ file.file_name }}">{{ file.file_name }}</h3>
+                        <p class="file-item-type">{{ file.get_file_type_display }}</p>
                     </div>
                 </div>
 
-                <div class="file-card-stats">
-                    <div class="file-card-stat">
-                        <div class="file-card-stat-label">Size</div>
-                        <div class="file-card-stat-value file-size" data-size="{{ file.file_size }}"></div>
+                <!-- File Stats -->
+                <div class="file-item-stats">
+                    <div class="file-stat">
+                        <i class="fas fa-database"></i>
+                        <span class="file-size" data-size="{{ file.file_size }}"></span>
                     </div>
                     {% if file.excel_rows %}
-                        <div class="file-card-stat">
-                            <div class="file-card-stat-label">Rows</div>
-                            <div class="file-card-stat-value">{{ file.excel_rows }}</div>
+                        <div class="file-stat">
+                            <i class="fas fa-rows"></i>
+                            <span>{{ file.excel_rows }} rows</span>
                         </div>
-                    {% endif %}
-                    {% if file.excel_columns %}
-                        <div class="file-card-stat">
-                            <div class="file-card-stat-label">Cols</div>
-                            <div class="file-card-stat-value">{{ file.excel_columns }}</div>
+                        <div class="file-stat">
+                            <i class="fas fa-columns"></i>
+                            <span>{{ file.excel_columns }} cols</span>
                         </div>
                     {% endif %}
                 </div>
 
-                <div class="file-card-footer">
-                    <span>{{ file.upload_date|date:"M d, Y" }}</span>
-                    <span>by {{ file.uploader.username }}</span>
+                <!-- File Metadata -->
+                <div class="file-item-meta">
+                    <p class="file-item-date">{{ file.upload_date|date:"M d, Y" }}</p>
+                    <p class="file-item-uploader">by <strong>{{ file.uploader.username }}</strong></p>
                 </div>
-            </a>
+
+                <!-- Action Buttons -->
+                <div class="file-item-actions">
+                    <a href="{{ file.file.url }}" target="_blank" class="file-action-btn file-download-btn" title="Download file">
+                        <i class="fas fa-download"></i><span>Download</span>
+                    </a>
+                    {% if file.excel_data %}
+                        <button type="button" class="file-action-btn file-preview-btn" onclick="toggleExcelPreview({{ file.id }}, event)" title="View data preview">
+                            <i class="fas fa-eye"></i><span>Preview</span>
+                        </button>
+                    {% endif %}
+                </div>
+
+                <!-- Excel Data Preview (Hidden by default) -->
+                {% if file.excel_data %}
+                    <div class="file-excel-preview hidden" id="preview-{{ file.id }}">
+                        <div class="file-preview-header">
+                            <h4 class="file-preview-title">Data Preview</h4>
+                            <button type="button" class="file-preview-close" onclick="closeExcelPreview({{ file.id }})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="file-preview-table-wrapper">
+                            <table class="file-preview-table">
+                                <thead>
+                                    <tr>
+                                        {% for col in file.excel_columns_list %}
+                                            <th title="{{ col }}">{{ col }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody id="preview-body-{{ file.id }}">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="file-preview-footer">
+                            <p class="file-preview-info">
+                                Showing first 10 rows of {{ file.excel_rows }} total
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
         {% endfor %}
     </div>
     
     <!-- Stats -->
-    <div class="mt-12 grid md:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="glass-effect rounded-xl p-6 text-center">
-            <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-3">
-                <i class="fas fa-file text-blue-600 text-xl"></i>
+    <div class="files-stats" data-aos="fade-up" data-aos-delay="300">
+        <div class="file-stat-card glass-effect">
+            <div class="file-stat-card-icon">
+                <i class="fas fa-file"></i>
             </div>
-            <p class="text-3xl font-bold gradient-text">{{ files.count }}</p>
-            <p class="text-gray-600 mt-1">Total Files</p>
+            <p class="file-stat-card-value">{{ files.count }}</p>
+            <p class="file-stat-card-label">Total Files</p>
         </div>
         
-        <div class="glass-effect rounded-xl p-6 text-center">
-            <div class="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-full mb-3">
-                <i class="fas fa-users text-green-600 text-xl"></i>
+        <div class="file-stat-card glass-effect">
+            <div class="file-stat-card-icon">
+                <i class="fas fa-users"></i>
             </div>
-            <p class="text-3xl font-bold gradient-text" id="uniqueUploaders">—</p>
-            <p class="text-gray-600 mt-1">Contributors</p>
+            <p class="file-stat-card-value" id="uniqueUploaders">—</p>
+            <p class="file-stat-card-label">Contributors</p>
         </div>
         
-        <div class="glass-effect rounded-xl p-6 text-center">
-            <div class="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full mb-3">
-                <i class="fas fa-download text-purple-600 text-xl"></i>
+        <div class="file-stat-card glass-effect">
+            <div class="file-stat-card-icon">
+                <i class="fas fa-download"></i>
             </div>
-            <p class="text-3xl font-bold gradient-text" id="totalSize">—</p>
-            <p class="text-gray-600 mt-1">Total Size</p>
+            <p class="file-stat-card-value" id="totalSize">—</p>
+            <p class="file-stat-card-label">Total Size</p>
         </div>
     </div>
 {% else %}
     <!-- Empty State -->
-    <div class="flex flex-col items-center justify-center py-20" data-aos="fade-up">
-        <div class="text-center">
-            <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-6">
-                <i class="fas fa-inbox text-3xl text-blue-600"></i>
+    <div class="files-empty" data-aos="fade-up">
+        <div class="files-empty-content">
+            <div class="files-empty-icon">
+                <i class="fas fa-inbox"></i>
             </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">No Files Yet</h3>
-            <p class="text-gray-600 mb-6">Be the first to upload and share files!</p>
+            <h3 class="files-empty-title">No Files Yet</h3>
+            <p class="files-empty-subtitle">Be the first to upload and share files!</p>
             {% if user.is_authenticated %}
                 <a href="{% url 'files:upload_file' %}" class="btn-primary-custom">
-                    <i class="fas fa-cloud-upload-alt mr-2"></i>Upload Your First File
+                    <i class="fas fa-cloud-upload-alt"></i><span>Upload Your First File</span>
                 </a>
             {% else %}
                 <a href="{% url 'accounts:register' %}" class="btn-primary-custom">
-                    <i class="fas fa-user-plus mr-2"></i>Get Started
+                    <i class="fas fa-user-plus"></i><span>Get Started</span>
                 </a>
             {% endif %}
         </div>
@@ -204,6 +166,52 @@ function formatBytes(bytes) {
     return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
 }
 
+function toggleExcelPreview(fileId, event) {
+    event.preventDefault();
+    const preview = document.getElementById(`preview-${fileId}`);
+    if (preview) {
+        preview.classList.toggle('hidden');
+        if (!preview.classList.contains('hidden')) {
+            loadExcelPreview(fileId);
+        }
+    }
+}
+
+function closeExcelPreview(fileId) {
+    const preview = document.getElementById(`preview-${fileId}`);
+    if (preview) {
+        preview.classList.add('hidden');
+    }
+}
+
+function loadExcelPreview(fileId) {
+    const tbody = document.getElementById(`preview-body-${fileId}`);
+    if (tbody && tbody.children.length === 0) {
+        // Get data from data attribute
+        const previewDiv = document.getElementById(`preview-${fileId}`);
+        const excelDataStr = previewDiv.dataset.excelData;
+        
+        if (excelDataStr) {
+            try {
+                const data = JSON.parse(excelDataStr);
+                const rows = data.rows || [];
+                
+                rows.forEach(row => {
+                    const tr = document.createElement('tr');
+                    row.forEach(cell => {
+                        const td = document.createElement('td');
+                        td.textContent = cell !== null && cell !== undefined ? cell : '—';
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                console.error('Error parsing Excel data:', e);
+            }
+        }
+    }
+}
+
 $(document).ready(function() {
     // Format all file sizes
     $('.file-size').each(function() {
@@ -212,7 +220,6 @@ $(document).ready(function() {
     });
     
     // Calculate stats
-    const files = {{ files.count }};
     let totalSize = 0;
     const uploaders = new Set();
     
@@ -220,13 +227,23 @@ $(document).ready(function() {
         totalSize += parseInt($(this).data('size'));
     });
     
-    $('table tbody tr').each(function() {
-        const uploader = $(this).find('td:last').text().trim();
-        uploaders.add(uploader);
+    $('.file-item-uploader strong').each(function() {
+        uploaders.add($(this).text().trim());
     });
     
     $('#uniqueUploaders').text(uploaders.size);
     $('#totalSize').text(formatBytes(totalSize));
 });
 </script>
+
+{% with files as files_data %}
+    {% for file in files_data %}
+        {% if file.excel_data %}
+            <script>
+                document.getElementById('preview-{{ file.id }}').dataset.excelData = '{{ file.excel_data|escapejs }}';
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endwith %}
+
 {% endblock %}
