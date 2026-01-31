@@ -2,7 +2,7 @@
 
 This repository contains a **mini blog web application** developed as part of an interview assessment.
 
-## 🚀 Project Overview
+##  Project Overview
 
 The application allows users to:
 - Register and log in securely
@@ -14,7 +14,7 @@ The project was built following the given requirements and tech stack.
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **Backend:** Django
 - **Database:** MySQL
@@ -23,28 +23,28 @@ The project was built following the given requirements and tech stack.
 
 ---
 
-## ✨ Features
+##  Features
 
-### 🔐 User Authentication & Authorization
+###  User Authentication & Authorization
 - User registration
 - Login & logout
 - Access control for authenticated users
 
-### 📝 Blog Posts
+###  Blog Posts
 - Create blog posts
 - Upload and display images with posts
 
-### 📊 Excel File Upload
+###  Excel File Upload
 - Upload Excel files (`.xls`, `.xlsx`)
 - Display rows and columns dynamically on the website
 
-### 📁 File Upload
+###  File Upload
 - Upload files through the web interface
 - Server-side handling using Django
 
 ---
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 
 ### 1. Clone the Repository
 ```bash
@@ -84,3 +84,4 @@ http://127.0.0.1:8000
 
 **Ameya Taneja**  
 GitHub: https://github.com/realTNEU
+
